@@ -9,7 +9,7 @@ from models import User, Review, Category, Course, Like, Professor
 from config import POST_PER_PAGE_SHORT, POST_PER_PAGE_LONG , SUPERUSERS
 from sqlalchemy.sql import func
 from config import MAX_SEARCH_RESULTS
-
+from config import WHOOSH_ENABLED
 
 # Instantiate Authomatic.
 authomatic = Authomatic(oauthLogin.oauthconfig, '\x00\x18}{\x9b\xa4(\xaa\xf7[4\xd5Ko\x07S\x03#%_cM\xf2y.\xf6\xf00Kr', report_errors=False)
@@ -26,6 +26,7 @@ def load_user(id):
 def before_request():
     g.user = current_user
     g.search_form = searchForm()
+    g.search_enabled = WHOOSH_ENABLED
 
 
 #LANDING and  HOMEPAGE VIEWS

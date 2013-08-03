@@ -37,3 +37,6 @@ ADMINS = ['joeclef@hotmail.com', 'jj1347@nyu.edu']
 
 POST_PER_PAGE_SHORT = 2
 POST_PER_PAGE_LONG = 1
+
+#Settings for Disabling Full text Search when running on Heroku
+WHOOSH_ENABLED = os.environ.get('HEROKU') is None

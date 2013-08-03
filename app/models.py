@@ -1,7 +1,7 @@
 from hashlib import md5
 from app import db, app
 from flask import url_for
-import flask.ext.whooshalchemy as whooshalchemy
+from config import WHOOSH_ENABLED
 
 #association table that links Course and Category
 course_categories = db.Table('course_categories',
@@ -119,5 +119,8 @@ class Like(db.Model):
         return '< Like value %r>'%self.like
 
 
-whooshalchemy.whoosh_index(app, Course)
+if WHOOSH_ENABLED:
+    import flask.ext.whooshalchemy as whooshalchemy
+    whooshalchemy.whoosh_index(app, Course)
     
+
