@@ -13,11 +13,11 @@ WHOOSH_BASE = os.path.join(basedir, 'search.db')
 
 #Database URI
 if os.environ.get('DATABASE_URL') is None:
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:police12345@localhost:5432/nyuadcoursereview'
 else:
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
 
-#POSTGRESQLURI 'postgresql+psycopg2://postgres:police12345@localhost:5432/nyuadcoursereview'
+#SQLiteURI 'sqlite:///' + os.path.join(basedir, 'app.db')
 
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 

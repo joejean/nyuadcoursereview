@@ -1,7 +1,12 @@
 from hashlib import md5
 from app import db, app
 from flask import url_for
-from config import WHOOSH_ENABLED
+#from config import WHOOSH_ENABLED
+from flask.ext.sqlalchemy import SQLAlchemy, BaseQuery
+from sqlalchemy_searchable import SearchQueryMixin, Searchable
+from sqlalchemy_utils.types import TSVectorType
+
+
 
 #association table that links Course and Category
 course_categories = db.Table('course_categories',
@@ -18,7 +23,8 @@ course_professors = db.Table('course_professors',
 
                           )
 
-
+class CourseQuery(BaseQuery, SearchQueryMixin):
+    pass
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key = True )
@@ -48,9 +54,18 @@ class User(db.Model):
         return '< User %r>'%self.net_id
     
      
-class Course(db.Model):
+class Course(db.Model, Searchable):
+    query_class = CourseQuery
+    
+    __searchable_columns__ = ['course_name']
+    __search_options__ = {
+        'tablename': 'course',
+        'search_vector_name': 'search_vector',
+        'search_trigger_name': '{table}_search_update',
+        'search_index_name': '{table}_search_index',
+    }
     __tablename__ = 'course'
-    __searchable__ = ['course_name']
+    search_vector = db.Column(TSVectorType)
     id = db.Column(db.Integer, primary_key = True )
     course_name =db.Column(db.String(120))
     course_description = db.Column(db.Text)
@@ -119,8 +134,8 @@ class Like(db.Model):
         return '< Like value %r>'%self.like
 
 
-if WHOOSH_ENABLED:
-    import flask.ext.whooshalchemy as whooshalchemy
-    whooshalchemy.whoosh_index(app, Course)
+##if WHOOSH_ENABLED:
+##    import flask.ext.whooshalchemy as whooshalchemy
+##    whooshalchemy.whoosh_index(app, Course)
     
 

@@ -153,13 +153,34 @@ course1 = models.Course.query.get(1)
 course2 = models.Course.query.get(2)
 course3 = models.Course.query.get(3)
 course4 = models.Course.query.get(4)
+course5 = models.Course.query.get(5)
 
 from datetime import datetime
 review1 = models.Review(review_date= datetime.utcnow(), review_comment="This course is so good I love it", rating =5, course_id=course1.id, user_id =user1.id)
 review2 = models.Review(review_date= datetime.utcnow(), review_comment="The best course I have ever taken", rating =4, course_id=course2.id, user_id =user2.id)
 review3 = models.Review(review_date= datetime.utcnow(), review_comment="I recommend this course to everyone who is curious", rating =5, course_id=course3.id, user_id =user3.id)
 review4 = models.Review(review_date= datetime.utcnow(), review_comment="Man you gotta love this class", rating =3, course_id=course4.id, user_id =user4.id)
+review5 = models.Review(review_date= datetime.utcnow(), review_comment="heheh, people this course is so good I love it", rating =4, course_id=course1.id, user_id =user2.id)
+db.session.add_all([review1, review2, review3, review4, review5])
 
-db.session.add_all([review1, review2, review3, review4])
+
+
+
+p1 = models.Professor.query.get(1)
+p2 = models.Professor.query.get(2)
+p3 = models.Professor.query.get(3)
+course1.professor.append(p1)
+course2.professor.append(p1)
+course3.professor.append(p2)
+ccourse4.professor.append(p3)
+ccourse5.professor.append(p3)
+
+cat1 = models.Category.query.get(1)
+cat2 = models.Category.query.get(2)
+course1.categories.append(cat1)
+course2.categories.append(cat2)
+course3.categories.append(cat2)
+course4.categories.append(cat1)
+course5.categories.append(cat2)
 
 db.session.commit()

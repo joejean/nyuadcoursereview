@@ -10,6 +10,7 @@ from config import POST_PER_PAGE_SHORT, POST_PER_PAGE_LONG , SUPERUSERS
 from sqlalchemy.sql import func
 from config import MAX_SEARCH_RESULTS
 from config import WHOOSH_ENABLED
+from sqlalchemy_searchable import search
 
 # Instantiate Authomatic.
 authomatic = Authomatic(oauthLogin.oauthconfig, '\x00\x18}{\x9b\xa4(\xaa\xf7[4\xd5Ko\x07S\x03#%_cM\xf2y.\xf6\xf00Kr', report_errors=False)
@@ -45,7 +46,7 @@ def home():
     #Most reviewwed courses , starting with those that have at least 2 reviews.
     most_rated_courses = db.session.query(models.Review, func.count(models.Review.course_id)).group_by(models.Review.course_id).\
               having(func.count(models.Review.course_id) > 1).order_by(func.count(models.Review.course_id).desc()).all()[0:30]
-    
+    #having(func.count(models.Review.course_id) > 1)
     latest_reviews = Review.query.order_by(Review.review_date.desc()).all()[0:2]
 
     return render_template('home.html', categories = categories, courses=most_rated_courses, reviews= latest_reviews, title="Home" )
@@ -63,7 +64,8 @@ def search():
 @app.route('/search_results/<query>')
 @login_required
 def search_results(query):
-    results = Course.query.whoosh_search(query, MAX_SEARCH_RESULTS).all()
+    #Article.query.search(u'Finland').limit(5).all()
+    results = Course.query.search(unicode(query)).limit(MAX_SEARCH_RESULTS).all()
     return render_template('searchresults.html',query = query, results = results, title ="Search Results")
 
 
