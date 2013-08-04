@@ -62,7 +62,7 @@
 				  <li><a href="{{ url_for('login') }}">Login</a></li>
 				  {% endif %}
             </ul>
-			{% if g.user.is_authenticated() and g.search_enabled %}
+			{% if g.user.is_authenticated() %}
             <form class="navbar-form navbar-searc form-search" action= "{{url_for('search')}}" method="post" name= "search">
 				<div class="input-append">
 					{{g.search_form.hidden_tag()}}

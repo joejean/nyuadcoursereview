@@ -27,6 +27,7 @@ class NYUADProvider(OAuth2):
         user.NetID = data.get('netID')
         user.school = data.get('school')
         user.classyear = data.get('class')
+        user.groups = data.get('groups')
         
         return user
 

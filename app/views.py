@@ -8,8 +8,7 @@ from app import oauthLogin
 from models import User, Review, Category, Course, Like, Professor
 from config import POST_PER_PAGE_SHORT, POST_PER_PAGE_LONG , SUPERUSERS
 from sqlalchemy.sql import func
-from config import MAX_SEARCH_RESULTS
-from config import WHOOSH_ENABLED
+from config import MAX_SEARCH_RESULTS, RESTRICTED_GROUPS
 from sqlalchemy_searchable import search
 
 # Instantiate Authomatic.
@@ -27,7 +26,7 @@ def load_user(id):
 def before_request():
     g.user = current_user
     g.search_form = searchForm()
-    g.search_enabled = WHOOSH_ENABLED
+    
 
 
 #LANDING and  HOMEPAGE VIEWS
@@ -44,12 +43,15 @@ def landing():
 def home():
     categories = Category.query.order_by(Category.category_name)
     #Most reviewwed courses , starting with those that have at least 2 reviews.
-    most_rated_courses = db.session.query(models.Review, func.count(models.Review.course_id)).group_by(models.Review.course_id).\
-              having(func.count(models.Review.course_id) > 1).order_by(func.count(models.Review.course_id).desc()).all()[0:30]
-    #having(func.count(models.Review.course_id) > 1)
+    most_rated_course_id_subquery = db.session.query(Review.course_id, func.count(Review.course_id).label("count")).\
+                                    group_by(Review.course_id).having(func.count(Review.course_id) > 1).subquery()
+
+    courses = db.session.query( Course, most_rated_course_id_subquery.c.count).join(most_rated_course_id_subquery).\
+              order_by(most_rated_course_id_subquery.c.count.desc()).all()[0:30]
+    
     latest_reviews = Review.query.order_by(Review.review_date.desc()).all()[0:2]
 
-    return render_template('home.html', categories = categories, courses=most_rated_courses, reviews= latest_reviews, title="Home" )
+    return render_template('home.html', categories = categories, courses=courses, reviews= latest_reviews, title="Home" )
 
 
 #SEARCH VIEWS
@@ -230,6 +232,11 @@ def login(provider_name='nyuad'):
         if result.user:
             # We need to update the user to get more info.
             result.user.update()
+            #Check the user group, if belongs to any restricted group redirect login
+            for gr in result.user.groups:
+                if gr in RESTRICTED_GROUPS:
+                    flash("Sorry, it seems that you are not a student, so you can't use NYUAD Coursereview.", "error")
+                    return redirect(url_for('landing'))
             #check if the user is in the database already
             user = User.query.filter_by(net_id = result.user.NetID).first()
             if user is None:

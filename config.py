@@ -7,6 +7,8 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 CSRF_ENABLED = True
 SECRET_KEY = '\x00\x18}{\x9b\xa4(\xaa\xf7[4\xd5Ko\x07S\x03#%_cM\xf2y.\xf6\xf00Kr'
 
+#NYU user Groups not allowed to login
+RESTRICTED_GROUPS =["nyu-admins", "admins", "nyu-it"]
 # Search
 MAX_SEARCH_RESULTS = 15
 WHOOSH_BASE = os.path.join(basedir, 'search.db')
