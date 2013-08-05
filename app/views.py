@@ -7,7 +7,7 @@ from flask_mail import Message
 from forms import reviewSubmissionForm, searchForm, courseSubmissionForm
 from app import oauthLogin
 from models import User, Review, Category, Course, Like, Professor
-from config import POST_PER_PAGE_SHORT, POST_PER_PAGE_LONG , SUPERUSERS, MAIL_DEFAULT_SENDER, MAX_SEARCH_RESULTS, RESTRICTED_GROUPS, ADMINS
+from config import POST_PER_PAGE_SHORT, POST_PER_PAGE_LONG , SUPERUSERS, MAIL_DEFAULT_SENDER, MAX_SEARCH_RESULTS, AUTHORIZED_GROUPS, ADMINS
 from sqlalchemy.sql import func
 from sqlalchemy_searchable import search
 
@@ -30,7 +30,7 @@ def before_request():
     
 
 
-#LANDING and  HOMEPAGE VIEWS
+#LANDING and  HOMEPAGE , ABOUT and TERMS of USE VIEWS
 
 @app.route('/')
 @app.route('/landing')
@@ -38,6 +38,17 @@ def landing():
     if g.user.is_authenticated():
         return redirect(url_for('home'))
     return render_template('landing.html', title ="Welcome")
+
+
+@app.route('/about')
+def about():
+    return render_template('about.html', title ="About")
+
+
+@app.route('/termsofuse')
+def termsofuse():
+    return render_template('termsofuse.html', title ="Terms of Use")
+
 
 @app.route('/home')
 @login_required
@@ -253,9 +264,16 @@ def login(provider_name='nyuad'):
             result.user.update()
             #Check the user group, if belongs to any restricted group redirect login
             for gr in result.user.groups:
-                if gr in RESTRICTED_GROUPS:
-                    flash("Sorry, it seems that you are not a student, so you can't use NYUAD Coursereview.", "error")
-                    return redirect(url_for('landing'))
+                if gr in AUTHORIZED_GROUPS:
+                    authorized = True
+                    break
+                else:
+                    authorized = False
+                    
+            if not authorized:
+                flash("Sorry, it seems that you are not a student, so you can't use NYUAD Coursereview.", "error")
+                return redirect(url_for('landing'))
+            
             #check if the user is in the database already
             user = User.query.filter_by(net_id = result.user.NetID).first()
             if user is None:

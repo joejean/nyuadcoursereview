@@ -41,5 +41,5 @@ if os.environ.get('HEROKU') is not None:
     app.logger.setLevel(logging.INFO)
     app.logger.info('NYUAD Course Review')
 
-from app import views, models
+from app import views, models, adminviews
 

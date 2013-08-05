@@ -38,7 +38,7 @@
 					{% for course, totalcomments in courses %}
 						<tr>
 						  <td><a href="{{url_for('reviews',courseid=course.id)}}"><strong>{{ course.course_name}}</strong></a> with <small> Prof {{course.professor[0].professor_name}}</small></td>
-						  <td><a href="{{url_for('reviews',courseid=course.id)}}">{{totalcomments}} Reviews</a></td>
+						  <td><a href="{{url_for('reviews',courseid=course.id)}}"><strong>{{totalcomments}} Reviews </strong></a></td>
 						</tr>
 					{% endfor %}
 					

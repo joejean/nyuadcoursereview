@@ -21,50 +21,40 @@ cat16 = models.Category(category_name="Theater")
 cat17 = models.Category(category_name="Visual Arts")
 cat18 = models.Category(category_name="Litterature and Creative Writing")
 cat19 = models.Category(category_name="Biology")
+cat20 = models.Category(category_name="Language")
 
 db.session.add_all([cat1, cat2, cat3, cat4, cat5, cat6, cat7, cat8, cat9, cat10,\
-                   cat11, cat12, cat13, cat14, cat15, cat16, cat17, cat18, cat19])
+                   cat11, cat12, cat13, cat14, cat15, cat16, cat17, cat18, cat19, cat20])
 
 db.session.commit()
-#db.session.rollback()
 
 
-prof_list = ['Abdelall Brenda', 'Abdulkadir Rahma ', 'Acker Jennifer',\
-             'Agamanolis Stefan ', 'Al-Assah Rana', 'Al-Ghoussein Tarek ',\
-             'Al-Khalil Muhamed', 'Almeida Diogo ', 'Alvarez Jose ', 'Alwan Yasser',\
-             'Ampka Awam ', 'Avakian Alexandra', 'Balzani Marzia', 'Barkow Rachel ',\
-             'Bazzi Mohamad ', 'Bearman Peter', 'Benaych-Georges Florent', 'Berestycki Julien ',\
-             'Bernstein Joel ', 'Biais Bruno ', 'Bilbiie Florin ', 'Bisin Alberto', 'Block Ned ', 'Bogomolnaia Anna ',\
-             'Bouarroudj Sofiane ', 'Bougdaeva Saglar', 'Bourguignon Francois ','Bransford Jesse ', 'Bruckner Hannah', \
-             'Buarque de Hollanda Cristina ', 'Buchanan Bruce', 'Burt John ', 'Cai David ', 'Camia Federico', \
-             'Carey Susan ', 'Cesarini David', 'Chacon Mario', 'Chandra Kanchan ', 'Charlier Celina ', 'Chassagneux Jean-Francois ',\
-             'Chaudhuri Una', 'Chen Jay ', 'Ciezadlo Annia', 'Coleman Jules', 'Cook Douglas ', 'Copti Scandar', 'Coray Catherine ', 'Daughtry Martin',\
-             'Dave Chetan ', 'Derluguian Georgi ', 'Desplan Claude ', 'Dimitri Alexandra ', 'Dixon Jo ', 'Djouma Georges ', 'Dore Tim ', 'El Araby Omima ', \
-             'El Saddik Abdulmotaleb ', 'Emerson Jed ', 'England Paula','Eynot Tzipora ', 'Ezgi Defne', 'Falkenburg Reindert', 'Feldman Walter',\
-             'Fitzgerald Scott ', 'Friedland Roger ', 'Gelfand Joseph','Gladish Carl', 'Guedes Carlos', 'Haefke Christian ', 'Haykel Bernard',\
-             'Hedstrom Peter', 'Helmrich Leonard', 'Henry PJ', 'Hix Simon', 'Holmes Stephen ', 'Horta Paulo', 'Hudson Dale ', 'Imbs Jean',\
-             'Isleem Nasser ', 'Jagannathan Ramesh', 'Jarjour Tala', 'Jensen Jeffrey ', 'Jeong Seung-Hoon ', 'Jiao Xiao Xiao ', 'Kennedy Philip',\
-             'Khapli Sachin ', 'King Jason ', 'Kittaneh Khulood', 'Klass Perri',\
-             'Klimke Martin', 'Klinenberg Eric ', 'Klingermann Hans-Dieter ', 'Koss Brian ', 'Koussa Joseph ', 'Kronman Anthony ', 'Kuhlke Kevin', 'Kumar Sunil ',\
-             'Laver Michael ', 'Le Jan Yves', 'Leahy John', 'Levine Debra', 'Magzoub Mazin', 'Majithia Sheetal ', 'Major Charlie', 'Malik Samreen ', \
-             'Manza Jeff ', 'Maudlin Timothy ', 'Mayoral Laura', 'McGlennon David ', 'Menoret Pascal ', 'Michael Marc', 'Mihm Maximilian ', 'Miller Judith',\
-             'Minsky Lauren ', 'Minsky Amir ',\
-             'Mitsis Phil ', 'Morning Ann', 'Morton Rebecca ', 'Moulin Herve ',\
-             'Naumov Pance ', 'Neuber Wolfgang', 'Noury Abdul ', 'Nyarko Yaw',\
-             'Odeh Sana ', 'Ogrodnik Mo ', 'OBrien John', 'Paik Christopher ',\
-             'Parthesius Robert', 'Patell Cyrus ', 'Peutz Nathalie ', 'Piano Fabio', 'Polendo Ruben ', 'Puccetti Goffredo', 'Purugganan Michael',\
-             'Pycke Jean-Renaud ', 'Quadflieg Susanne ', 'Quayle Matthew', 'Rabeh Wael ', 'Ramey Adam ', 'Ranciere Romain', 'Ray Debraj ', 'Riordan Kevin ', \
-             'Roberts Mallory', 'Roth Nadine ', 'Saint-Paul Gilles ',\
-             'Salehi-Ashtiani Kourosh', 'Sanders Lamar ', 'Savio Joanne ', 'Savio Jim', 'Scicchitano David ', 'Segal Gail', 'Sexton John ', 'Shah Nishi',\
-             'Shao Qiuxia ', 'Shariff Azim ', 'Shasha Dennis', 'Shiffman Daniel', 'Shohat Ella', 'Silverstein Matthew ', 'Sinanoglu Ozgur ', 'Siskin Clifford ',\
-             'Sissel Sandra ', 'Skop Ahna ', 'Smith Shafer ', 'Smith Roy ', 'Sreenivasan Katepalli ', 'Stalla Heidi ', 'Stam Robert ',\
-             'Stearns Justin ', 'Stimpson Catharine', 'Sunder Rajan Rajeswari ',\
-             'Swislocki Mark ', 'Szelenyi Ivan', 'Tan Ignatius ', 'Thom Kevin ',\
-             'Torche Florencia ', 'Torreano John ', 'Toussaint Godfried ','Trabolsi Ali ', 'Traub James ', 'Tsishchanka Kiryl ', 'Tucker Joshua', \
-             'Verdier Thierry ', 'Volk Tyler', 'Waley-Cohen Joanna', 'Waterbury John ', 'Waterman Bryan ', 'Way Niobe ', 'Westermann Mariet ',\
-             'Williams Deborah ', 'Wilson Charles ', 'Wolff Larry ', 'Zaloom Caitlin ', 'Zamir Shamoon ', 'Zaw Ingyin ', 'Zimmerman Jonathan',\
-             'Ziter Edward ', 'Zogby James']
 
+prof_list = ['Brenda Abdelall', 'Rahma Abdulkadir', 'Jennifer Acker', 'Stefan Agamanolis', 'Rana Al-Assah', 'Tarek Al-Ghoussein', 'Muhamed Al-Khalil', \
+             'Diogo Almeida', 'Jose Alvarez', 'Yasser Alwan', 'Awam Ampka', 'Alexandra Avakian', 'Marzia Balzani', 'Rachel Barkow', 'Mohamad Bazzi', 'Peter Bearman',\
+             'Florent Benaych-Georges', 'Julien Berestycki', 'Joel Bernstein', 'Bruno Biais', 'Florin Bilbiie', 'Alberto Bisin', 'Ned Block', 'Anna Bogomolnaia',\
+             'Sofiane Bouarroudj', 'Saglar Bougdaeva', 'Francois Bourguignon', 'Jesse Bransford', 'Hannah Bruckner', 'Cristina Buarque de Hollanda', 'Bruce Buchanan',\
+             'John Burt', 'David Cai', 'Federico Camia', 'Susan Carey', 'David Cesarini', 'Mario Chacon', 'Kanchan Chandra', 'Celina Charlier', 'Jean-Francois Chassagneux',\
+             'Una Chaudhuri', 'Jay Chen', 'Annia Ciezadlo', 'Jules Coleman', 'Douglas Cook', 'Scandar Copti', 'Catherine Coray', 'Martin Daughtry', 'Chetan Dave',\
+             'Georgi Derluguian', 'Claude Desplan', 'Alexandra Dimitri', 'Jo Dixon', 'Georges Djouma', 'Tim Dore', 'Omima El Araby', 'Abdulmotaleb El Saddik', 'Jed Emerson',\
+             'Paula England', 'Tzipora Eynot', 'Defne Ezgi', 'Reindert Falkenburg', 'Walter Feldman', 'Scott Fitzgerald', 'Roger Friedland', 'Joseph Gelfand', 'Carl Gladish',\
+             'Carlos Guedes', 'Christian Haefke', 'Bernard Haykel', 'Peter Hedstrom', 'Leonard Helmrich', 'PJ Henry', 'Simon Hix', 'Stephen Holmes', 'Paulo Horta', \
+             'Dale Hudson', 'Jean Imbs', 'Nasser Isleem', 'Ramesh Jagannathan', 'Tala Jarjour', 'Jeffrey Jensen', 'Seung-Hoon Jeong', 'Xiao Jiao', 'Philip Kennedy', \
+             'Sachin Khapli',\
+             'Jason King', 'Khulood Kittaneh', 'Perri Klass', 'Martin Klimke', 'Eric Klinenberg', 'Hans-Dieter Klingermann', 'Brian Koss', 'Joseph Koussa', 'Anthony Kronman',\
+             'Kevin Kuhlke', 'Sunil Kumar', 'Michael Laver', 'Yves Le-Jan', 'John Leahy', 'Debra Levine', 'Mazin Magzoub', 'Sheetal Majithia', 'Charlie Major', 'Samreen Malik',\
+             'Jeff Manza', 'Timothy Maudlin', 'Laura Mayoral', 'David McGlennon', 'Pascal Menoret', 'Marc Michael', 'Maximilian Mihm', 'Judith Miller', 'Lauren Minsky', \
+             'Amir Minsky', 'Phil Mitsis', 'Ann Morning', 'Rebecca Morton', 'Herve Moulin', 'Pance Naumov', 'Wolfgang Neuber', 'Abdul Noury', 'Yaw Nyarko', 'Sana Odeh', \
+             'Mo Ogrodnik', 'John OBrien', 'Christopher Paik', 'Robert Parthesius', 'Cyrus Patell', 'Nathalie Peutz', 'Fabio Piano', 'Ruben Polendo', 'Goffredo Puccetti',\
+             'Michael Purugganan', 'Jean-Renaud Pycke', 'Susanne Quadflieg', 'Matthew Quayle', 'Wael Rabeh', 'Adam Ramey', 'Romain Ranciere', 'Debraj Ray', 'Kevin Riordan',\
+             'Mallory Roberts', 'Nadine Roth', 'Gilles Saint-Paul', 'Kourosh Salehi-Ashtiani', 'Lamar Sanders', 'Joanne Savio', 'Jim Savio', 'David Scicchitano', 'Gail Segal',\
+             'John Sexton', 'Nishi Shah', 'Qiuxia Shao', 'Azim Shariff', 'Dennis Shasha', 'Daniel Shiffman', 'Ella Shohat', 'Matthew Silverstein', 'Ozgur Sinanoglu',\
+             'Clifford Siskin', 'Sandra Sissel', 'Ahna Skop', 'Shafer Smith', 'Roy Smith', 'Katepalli Sreenivasan', 'Heidi Stalla', 'Robert Stam', 'Justin Stearns',\
+             'Catharine Stimpson', 'Rajeswari Sunder Rajan', 'Mark Swislocki', 'Ivan Szelenyi', 'Ignatius Tan', 'Kevin Thom', 'Florencia Torche', 'John Torreano',\
+             'Godfried Toussaint', 'Ali Trabolsi', 'James Traub', 'Kiryl Tsishchanka', 'Joshua Tucker', 'Thierry Verdier', 'Tyler Volk', 'Joanna Waley-Cohen', 'John Waterbury',\
+             'Bryan Waterman', \
+             'Niobe Way', 'Mariet Westermann', 'Deborah Williams', 'Charles Wilson', 'Larry Wolff', 'Caitlin Zaloom', 'Shamoon Zamir', 'Ingyin Zaw', 'Jonathan Zimmerman',\
+             'Edward Ziter', 'James Zogby']
 #Add professors
 for i in range(198):                 
     prof= models.Professor(professor_name = prof_list[i])
@@ -111,18 +101,8 @@ lab portion of the class guides students through basic musical\
 elements such as notation systems, scales, and simple compositional\
 techniques.")
 
-course3 = models.Course(course_name="What is Music?",
-course_description= "This course analyzes what we understand as\
-'music.' Drawing on music of different styles from all over the world,\
-we will explore what constitutes musical meaning, how it is produced,\
-and how music expresses feelings. Taking advantage of the\
-multicultural nature of NYUAD, we will explore the cultural and\
-universal mechanisms at play when we listen and understand music. A\
-lab portion of the class guides students through basic musical\
-elements such as notation systems, scales, and simple compositional\
-techniques.")
 
-course4 = models.Course(course_name="Innovation in the Ancient World",
+course3 = models.Course(course_name="Innovation in the Ancient World",
 course_description="This course probes the heuristics of human\
 innovation in the ancient world. We study the earliest human\
 inventions such as spears and simple tools; ponder the methods that\
@@ -135,52 +115,17 @@ of these attributes from the ancient world.")
 
 
 
-course5 =models.Course(course_name="Bio Imaging", course_description="This course presents an introduction to image\
+course4 =models.Course(course_name="Bio Imaging", course_description="This course presents an introduction to image\
 formation, processing, and related techniques, as they pertain to imaging of biological structures for medical and other\
  applications. Ultrasound, Magnetic Resonance Imaging, X-Ray Tomography, and Nuclear Medicine are among the topics cover\
 ed, together with a hands-on introduction to biomedical image processing and pattern recognition.")
 
-db.session.add_all([course1, course2, course3, course4, course5])
+db.session.add_all([course1, course2, course3, course4])
 
 db.session.commit()
 
-user1 = models.User.query.get(1)
-user2 = models.User.query.get(2)
-user3 = models.User.query.get(3)
-user4 = models.User.query.get(4)
-                              
-course1 = models.Course.query.get(1)
-course2 = models.Course.query.get(2)
-course3 = models.Course.query.get(3)
-course4 = models.Course.query.get(4)
-course5 = models.Course.query.get(5)
-
-from datetime import datetime
-review1 = models.Review(review_date= datetime.utcnow(), review_comment="This course is so good I love it", rating =5, course_id=course1.id, user_id =user1.id)
-review2 = models.Review(review_date= datetime.utcnow(), review_comment="The best course I have ever taken", rating =4, course_id=course2.id, user_id =user2.id)
-review3 = models.Review(review_date= datetime.utcnow(), review_comment="I recommend this course to everyone who is curious", rating =5, course_id=course3.id, user_id =user3.id)
-review4 = models.Review(review_date= datetime.utcnow(), review_comment="Man you gotta love this class", rating =3, course_id=course4.id, user_id =user4.id)
-review5 = models.Review(review_date= datetime.utcnow(), review_comment="heheh, people this course is so good I love it", rating =4, course_id=course1.id, user_id =user2.id)
-db.session.add_all([review1, review2, review3, review4, review5])
 
 
 
 
-p1 = models.Professor.query.get(1)
-p2 = models.Professor.query.get(2)
-p3 = models.Professor.query.get(3)
-course1.professor.append(p1)
-course2.professor.append(p1)
-course3.professor.append(p2)
-ccourse4.professor.append(p3)
-ccourse5.professor.append(p3)
 
-cat1 = models.Category.query.get(1)
-cat2 = models.Category.query.get(2)
-course1.categories.append(cat1)
-course2.categories.append(cat2)
-course3.categories.append(cat2)
-course4.categories.append(cat1)
-course5.categories.append(cat2)
-
-db.session.commit()

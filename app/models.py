@@ -50,6 +50,8 @@ class User(db.Model):
 
     def __repr__(self):
         return '< User %r>'%self.net_id
+    def __str__(self):
+        return self.net_id
     
      
 class Course(db.Model, Searchable):
@@ -65,8 +67,8 @@ class Course(db.Model, Searchable):
     __tablename__ = 'course'
     search_vector = db.Column(TSVectorType)
     id = db.Column(db.Integer, primary_key = True )
-    course_name =db.Column(db.String(120), index = True)
-    course_description = db.Column(db.Text)
+    course_name =db.Column(db.String(120), index = True, nullable = False)
+    course_description = db.Column(db.Text, nullable = False)
     course_reviews = db.relationship('Review', backref ='course', lazy ='dynamic')
     categories = db.relationship('Category', secondary=course_categories, backref = 'courses', lazy='dynamic')
     
@@ -75,9 +77,9 @@ class Course(db.Model, Searchable):
     
     def __repr__(self):
         return '< Course %r >'%(self.course_name)
+    def __str__(self):
+        return self.course_name
     
-#whooshalchemy.whoosh_index(app, Course)
-
 
 class Professor(db.Model):
     id = db.Column(db.Integer, primary_key = True )
@@ -86,6 +88,8 @@ class Professor(db.Model):
      
     def __repr__(self):
         return '< Professor %r>'%self.professor_name
+    def __str__(self):
+        return self.professor_name
 
 
 
@@ -100,6 +104,8 @@ class Category(db.Model):
 
     def __repr__(self):
         return '< Category %r>'%self.category_name
+    def __str__(self):
+        return self.category_name
 
      
 
@@ -118,7 +124,8 @@ class Review(db.Model):
          
     def __repr__(self):
         return '< Review %r>'%self.id
-
+    def __str__(self):
+        return self.review_comment
 
 
 
