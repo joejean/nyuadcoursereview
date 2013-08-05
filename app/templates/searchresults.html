@@ -15,6 +15,9 @@
 		  
 		{% if results ==[] %}
 				  <p><strong>Sorry, no results were found for this query</strong></p>
+				  <p>The course you are looking for might not be in our database yet. Please <a href="{{url_for('submitcourse')}}">
+				  click here to send it to us </a> and we will add it. Thank you !</p>
+				  
 		{% else %}
 			<table class="table table-striped  table-bordered">
 				<thead>

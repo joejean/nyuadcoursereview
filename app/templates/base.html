@@ -57,10 +57,11 @@
 				{% if g.user.is_authenticated() %}
 				  <li><a href="{{url_for('home')}}">Home</a></li>
 				  <li><a href="{{url_for('user',netID=g.user.net_id)}}">My profile</a></li>
+				  <li><a href="{{url_for('submitcourse')}}">Submit Course</a></li>
 				  <li><a href="{{url_for('logout')}}">Logout</a></li>
-				  {% else %}
+				{% else %}
 				  <li><a href="{{ url_for('login') }}">Login</a></li>
-				  {% endif %}
+				{% endif %}
             </ul>
 			{% if g.user.is_authenticated() %}
             <form class="navbar-form navbar-searc form-search" action= "{{url_for('search')}}" method="post" name= "search">
@@ -131,10 +132,16 @@
 		
 		
 		<footer>
-			<stron><hr>
-			<p>© Course Review @ NYUAD 2013. | Developed by <a href="mailto:jj1347@nyu.edu">Joe Jean '16</a> 
-			<a class="pull-right"href="#">Terms of Use</a>
-			</p></strong>
+			<hr>
+			{% if g.user.is_authenticated() %}
+			<p><a href="#"> About </a> | <a href="{{url_for('home')}}"> Home</a> | <a href="{{url_for('user',netID=g.user.net_id)}}"> My profile</a> | <a href="{{url_for('submitcourse')}}">Send Us a Course</a>
+			| <a href="{{url_for('logout')}}"> Logout</a> | <a href="#"> Terms of Use</a> </p> 
+			{% else %}
+			<p><a href="#">About </a> | <a href="#">Terms of Use</a></p>
+			{% endif %}
+			<p>© Course Review @ NYUAD 2013. | Developed by <a href="mailto:jj1347@nyu.edu">Joe Jean '16</a></p>
+			
+			
 		</footer>
 
 		</div> <!-- /container -->

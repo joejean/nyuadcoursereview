@@ -2,14 +2,15 @@ from flask import Flask, render_template, request, make_response, redirect, url_
 from authomatic.adapters import WerkzeugAdapter
 from authomatic import Authomatic
 from flask.ext.login import login_user, logout_user, login_required, current_user
-from app import app, lm, db, models
-from forms import reviewSubmissionForm, searchForm
+from app import app, lm, db, models, mail
+from flask_mail import Message
+from forms import reviewSubmissionForm, searchForm, courseSubmissionForm
 from app import oauthLogin
 from models import User, Review, Category, Course, Like, Professor
-from config import POST_PER_PAGE_SHORT, POST_PER_PAGE_LONG , SUPERUSERS
+from config import POST_PER_PAGE_SHORT, POST_PER_PAGE_LONG , SUPERUSERS, MAIL_DEFAULT_SENDER, MAX_SEARCH_RESULTS, RESTRICTED_GROUPS, ADMINS
 from sqlalchemy.sql import func
-from config import MAX_SEARCH_RESULTS, RESTRICTED_GROUPS
 from sqlalchemy_searchable import search
+
 
 # Instantiate Authomatic.
 authomatic = Authomatic(oauthLogin.oauthconfig, '\x00\x18}{\x9b\xa4(\xaa\xf7[4\xd5Ko\x07S\x03#%_cM\xf2y.\xf6\xf00Kr', report_errors=False)
@@ -88,6 +89,24 @@ def coursesbymajor(catid, page=1):
     
     return render_template('courses-by-major.html', category = category, categories = categories, courses = courses, title="Courses By Major" )
 
+#COURSE SUBMISSION VIEW
+@app.route('/submitcourse', methods=['GET', 'POST'])
+@login_required
+def submitcourse():
+    form = courseSubmissionForm()
+    if form.validate_on_submit():
+        
+        msg = Message("Course Submission", sender = MAIL_DEFAULT_SENDER, recipients = ADMINS)
+        msg.body = """
+        From: <%s>
+        Course: %s
+        Professor: %s
+        """ % (g.user.net_id, form.course.data, form.professor.data)
+        mail.send(msg)
+        flash("Course submitted. Admins will add it as soon as possible.","success")
+        return redirect('home')
+    
+    return render_template('submitcourse.html',form = form, title= "Submit Course")
 
 
 #REVIEWS VIEWS
