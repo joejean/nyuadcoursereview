@@ -55,18 +55,20 @@
           <div class="nav-collapse collapse">
             <ul class="nav pull-right">
 				{% if g.user.is_authenticated() %}
-				  <li><a href="{{url_for('home')}}">Home</a></li>
-				  <li><a href="{{url_for('user',netID=g.user.net_id)}}">My profile</a></li>
-				  <li><a href="{{url_for('logout')}}">Logout</a></li>
-				  {% else %}
-				  <li><a href="{{ url_for('login') }}">Login</a></li>
-				  {% endif %}
+				  <li><a href="{{url_for('home')}}"><strong>Home</strong></a></li>
+				  <li><a href="{{url_for('user',netID=g.user.net_id)}}"><strong>My profile</strong></a></li>
+				  <li><a href="{{url_for('submitcourse')}}"><strong>Add a Course</strong></a></li>
+				  <li><a href="{{url_for('logout')}}"><strong>Logout</strong></a></li>
+				{% else %}
+					<li><a href="{{url_for('about')}}"><strong>About</strong></a></li>
+					<li><a href="{{ url_for('login') }}"><strong>Login</strong></a></li>
+				{% endif %}
             </ul>
-			{% if g.user.is_authenticated() and g.search_enabled %}
+			{% if g.user.is_authenticated() %}
             <form class="navbar-form navbar-searc form-search" action= "{{url_for('search')}}" method="post" name= "search">
 				<div class="input-append">
 					{{g.search_form.hidden_tag()}}
-					{{g.search_form.search(class="span4 search-query",placeholder="Enter Course name here")}}
+					{{g.search_form.search(class="span4 search-query",placeholder="Enter Course name or keywords here")}}
 					<button type="submit" class="btn">Search</button>
 				</div>
             </form>
@@ -131,10 +133,16 @@
 		
 		
 		<footer>
-			<stron><hr>
-			<p>© Course Review @ NYUAD 2013. | Developed by <a href="mailto:jj1347@nyu.edu">Joe Jean '16</a> 
-			<a class="pull-right"href="#">Terms of Use</a>
-			</p></strong>
+			<hr>
+			{% if g.user.is_authenticated() %}
+			<p><a href="{{url_for('about')}}"> About </a> | <a href="{{url_for('home')}}"> Home</a> | <a href="{{url_for('user',netID=g.user.net_id)}}"> My profile</a> | <a href="{{url_for('submitcourse')}}">Add a Course</a>
+			| <a href="{{url_for('logout')}}"> Logout</a> | <a href="{{url_for('termsofuse')}}"> Terms of Use</a> </p> 
+			{% else %}
+			<p><a href="{{url_for('about')}}">About </a> | <a href="{{ url_for('login') }}">Login</a> | <a href="{{url_for('termsofuse')}}">Terms of Use</a></p>
+			{% endif %}
+			<p>© Course Review @ NYUAD 2013. | Developed by <a href="mailto:jj1347@nyu.edu">Joe Jean '16</a></p>
+			
+			
 		</footer>
 
 		</div> <!-- /container -->

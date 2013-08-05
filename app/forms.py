@@ -10,4 +10,8 @@ class reviewSubmissionForm(Form):
 class searchForm(Form):
     search = TextField('search',validators = [Required("Please enter keyword or the entire course name.")])
 
+class courseSubmissionForm(Form):
+    course = TextField('course',validators = [Required("Please enter a course name")])
+    professor = TextField('professor',validators = [Required("Please enter a professor name")])
     
+   

@@ -4,10 +4,13 @@ from flask.ext.login import LoginManager
 from flask_mail import Mail
 from config import basedir, ADMINS, MAIL_SERVER, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD
 from momentjs import momentjs
+from flask.ext.admin import Admin
 import os
+
 
 app = Flask(__name__)
 app.config.from_object('config')
+admin = Admin(app, name ="NYUAD Course Review")
 db = SQLAlchemy(app)
 lm = LoginManager()
 lm.init_app(app)
@@ -38,5 +41,5 @@ if os.environ.get('HEROKU') is not None:
     app.logger.setLevel(logging.INFO)
     app.logger.info('NYUAD Course Review')
 
-from app import views, models
+from app import views, models, adminviews
 

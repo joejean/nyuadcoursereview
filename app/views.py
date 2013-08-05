@@ -2,14 +2,15 @@ from flask import Flask, render_template, request, make_response, redirect, url_
 from authomatic.adapters import WerkzeugAdapter
 from authomatic import Authomatic
 from flask.ext.login import login_user, logout_user, login_required, current_user
-from app import app, lm, db, models
-from forms import reviewSubmissionForm, searchForm
+from app import app, lm, db, models, mail
+from flask_mail import Message
+from forms import reviewSubmissionForm, searchForm, courseSubmissionForm
 from app import oauthLogin
 from models import User, Review, Category, Course, Like, Professor
-from config import POST_PER_PAGE_SHORT, POST_PER_PAGE_LONG , SUPERUSERS
+from config import POST_PER_PAGE_SHORT, POST_PER_PAGE_LONG , SUPERUSERS, MAIL_DEFAULT_SENDER, MAX_SEARCH_RESULTS, AUTHORIZED_GROUPS, ADMINS
 from sqlalchemy.sql import func
-from config import MAX_SEARCH_RESULTS
-from config import WHOOSH_ENABLED
+from sqlalchemy_searchable import search
+
 
 # Instantiate Authomatic.
 authomatic = Authomatic(oauthLogin.oauthconfig, '\x00\x18}{\x9b\xa4(\xaa\xf7[4\xd5Ko\x07S\x03#%_cM\xf2y.\xf6\xf00Kr', report_errors=False)
@@ -26,10 +27,10 @@ def load_user(id):
 def before_request():
     g.user = current_user
     g.search_form = searchForm()
-    g.search_enabled = WHOOSH_ENABLED
+    
 
 
-#LANDING and  HOMEPAGE VIEWS
+#LANDING and  HOMEPAGE , ABOUT and TERMS of USE VIEWS
 
 @app.route('/')
 @app.route('/landing')
@@ -38,17 +39,31 @@ def landing():
         return redirect(url_for('home'))
     return render_template('landing.html', title ="Welcome")
 
+
+@app.route('/about')
+def about():
+    return render_template('about.html', title ="About")
+
+
+@app.route('/termsofuse')
+def termsofuse():
+    return render_template('termsofuse.html', title ="Terms of Use")
+
+
 @app.route('/home')
 @login_required
 def home():
     categories = Category.query.order_by(Category.category_name)
     #Most reviewwed courses , starting with those that have at least 2 reviews.
-    most_rated_courses = db.session.query(models.Review, func.count(models.Review.course_id)).group_by(models.Review.course_id).\
-              having(func.count(models.Review.course_id) > 1).order_by(func.count(models.Review.course_id).desc()).all()[0:30]
+    most_rated_course_id_subquery = db.session.query(Review.course_id, func.count(Review.course_id).label("count")).\
+                                    group_by(Review.course_id).having(func.count(Review.course_id) > 1).subquery()
+
+    courses = db.session.query( Course, most_rated_course_id_subquery.c.count).join(most_rated_course_id_subquery).\
+              order_by(most_rated_course_id_subquery.c.count.desc()).all()[0:30]
     
     latest_reviews = Review.query.order_by(Review.review_date.desc()).all()[0:2]
 
-    return render_template('home.html', categories = categories, courses=most_rated_courses, reviews= latest_reviews, title="Home" )
+    return render_template('home.html', categories = categories, courses=courses, reviews= latest_reviews, title="Home" )
 
 
 #SEARCH VIEWS
@@ -63,7 +78,8 @@ def search():
 @app.route('/search_results/<query>')
 @login_required
 def search_results(query):
-    results = Course.query.whoosh_search(query, MAX_SEARCH_RESULTS).all()
+    #Article.query.search(u'Finland').limit(5).all()
+    results = Course.query.search(unicode(query)).limit(MAX_SEARCH_RESULTS).all()
     return render_template('searchresults.html',query = query, results = results, title ="Search Results")
 
 
@@ -84,6 +100,24 @@ def coursesbymajor(catid, page=1):
     
     return render_template('courses-by-major.html', category = category, categories = categories, courses = courses, title="Courses By Major" )
 
+#COURSE SUBMISSION VIEW
+@app.route('/submitcourse', methods=['GET', 'POST'])
+@login_required
+def submitcourse():
+    form = courseSubmissionForm()
+    if form.validate_on_submit():
+        
+        msg = Message("Course Submission", sender = MAIL_DEFAULT_SENDER, recipients = ADMINS)
+        msg.body = """
+        From: <%s>
+        Course: %s
+        Professor: %s
+        """ % (g.user.net_id, form.course.data, form.professor.data)
+        mail.send(msg)
+        flash("Course submitted. Admins will add it as soon as possible.","success")
+        return redirect('home')
+    
+    return render_template('submitcourse.html',form = form, title= "Submit Course")
 
 
 #REVIEWS VIEWS
@@ -228,6 +262,18 @@ def login(provider_name='nyuad'):
         if result.user:
             # We need to update the user to get more info.
             result.user.update()
+            #Check the user group, if belongs to any restricted group redirect login
+            for gr in result.user.groups:
+                if gr in AUTHORIZED_GROUPS:
+                    authorized = True
+                    break
+                else:
+                    authorized = False
+                    
+            if not authorized:
+                flash("Sorry, it seems that you are not a student, so you can't use NYUAD Coursereview.", "error")
+                return redirect(url_for('landing'))
+            
             #check if the user is in the database already
             user = User.query.filter_by(net_id = result.user.NetID).first()
             if user is None:
