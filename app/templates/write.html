@@ -48,7 +48,7 @@
 						<label class="control-label" for="coursequality">Course Quality</label>
 						<div class="controls">
 							{{form.rating.process_data(rating)|replace("None"," ")}}
-							{{form.rating}}
+							{{form.rating(class="span1")}}
 							
 						</div>
 				  </div>
@@ -77,7 +77,7 @@
 				  <div class="control-group">
 						<label class="control-label" for="coursequality">Course Quality</label>
 						<div class="controls">
-							{{form.rating}}
+							{{form.rating(class="span1")}}
 						</div>
 						
 				  </div>
