@@ -6,6 +6,7 @@ from flask.ext.admin.contrib.sqla import ModelView, fields
 from flask.ext.admin.contrib.fileadmin import FileAdmin
 import os.path as op
 from config import SUPERUSERS
+from wtforms import validators
 
 path = op.join(op.dirname(__file__), 'static')
 
@@ -39,7 +40,10 @@ class ReviewAdmin(MyBase):
     can_create = False
 
 class CourseAdmin(MyBase):
-    pass
+    form_args = dict(
+                    professor=dict(label='Professor', validators=[validators.required()])
+                )
+
 
 class StaticFilesAdmin(MyFileAdmin):
     pass
