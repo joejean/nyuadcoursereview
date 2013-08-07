@@ -9,7 +9,7 @@
 		</div>
 		{% else %}
 		<div class="page-header">
-			<h2> Review for : {{course.course_name}} <small>with {{professor.professor_name}}</small><h2>
+			<h2> New Review for : {{course.course_name}} <small>with {{professor.professor_name}}</small><h2>
 			
 		</div>
 		{% endif %}
@@ -45,19 +45,19 @@
 				 {{form.hidden_tag()}}
 				 
 				  <div class="control-group">
-						<label class="control-label" for="coursequality">Course Quality</label>
+						<label class="control-label" for="coursequality">Course Quality <span class="label label-important">*</span></label>
 						<div class="controls">
 							{{form.rating.process_data(rating)|replace("None"," ")}}
-							{{form.rating(class="span1")}}
+							{{form.rating(class="span1")}}<small><span class="label label-important"><i class="icon-star"> </i></span></small>
 							
 						</div>
 				  </div>
 				  <div class="control-group">
-					<label class="control-label" for="inputEmail">Your Thoughts</label>
+					<label class="control-label" for="inputEmail">Your Thoughts <span class="label label-important">*</span></label>
 			
 					<div class="controls">
 						{{form.comment.process_data(comment)|replace("None"," ")}}
-						{{form.comment(rows=13, class="input-block-level")}}
+						{{form.comment(rows=13, class="input-block-level")}}<small><span class="label label-important"><i class="icon-star"> </i></span></small>
 					</div>
 					
 				  </div>
@@ -75,14 +75,14 @@
 				 {{form.hidden_tag()}}
 				 
 				  <div class="control-group">
-						<label class="control-label" for="coursequality">Course Quality</label>
+						<label class="control-label" for="coursequality">Course Quality <span class="label label-important">*</span></label>
 						<div class="controls">
 							{{form.rating(class="span1")}}
 						</div>
 						
 				  </div>
 				  <div class="control-group">
-					<label class="control-label" for="inputEmail">Your Thoughts</label>
+					<label class="control-label" for="inputEmail">Your Thoughts <span class="label label-important">*</span></label>
 					<div class="controls">
 						{{form.comment(rows=13, class="input-block-level")}}
 					</div>

@@ -39,16 +39,16 @@
 				 {{form.hidden_tag()}}
 				 
 				  <div class="control-group">
-						<label class="control-label" for="coursequality">Course Name</label>
+						<label class="control-label" for="coursequality">Course Name <span class="label label-important">*</span></label>
 					
 						<div class="controls">
-							{{form.course(size=70, class="input-block-level")}}
+							{{form.course(size=60,class="span4")}}
 						</div>
 				  </div>
 				  <div class="control-group">
-					<label class="control-label" for="inputEmail">Professor Name</label>
+					<label class="control-label" for="inputEmail">Professor Name <span class="label label-important">*</span></label>
 					<div class="controls">
-						{{form.professor(size=40)}}
+						{{form.professor(size=20, class="span4")}}
 					</div>
 				  </div>
 				  
