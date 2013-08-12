@@ -5,7 +5,21 @@
 		
 		
 		<div class="hero-unit">
-			<h2>{{course.course_name}} <small>with {{course.professor[0].professor_name}}</small></h2>
+			<h2>{{course.course_name}} 
+			{% if (course.professor|length)==0 %}
+			</h2>
+			{% endif %}
+			
+			{% if (course.professor|length)==1 %}
+			<small>with {{course.professor[0].professor_name}}</small></h2>
+			{% else %}
+				<small>with 
+				{% for c in course.professor %}
+				{{c.professor_name}},
+				{% endfor %}
+				</small></h2>
+			{% endif %}
+			 	
 			<p><small>{{course.course_description}}</small></p>
 			<p>Overal Rating : <span class="badge badge-inverse"> {{avgrating}} / 5</span> 
 			<small> 

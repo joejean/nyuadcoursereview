@@ -29,15 +29,17 @@ class ProfessorAdmin(MyBase):
         'courses': QuerySelectMultipleFieldSet
     }
 
+   
+
 
 class UserAdmin(MyBase):
-    can_create = False
+    can_create = True
 
 class CategoryAdmin(MyBase):
     pass
 
 class ReviewAdmin(MyBase):
-    can_create = False
+    can_create = True
 
 class CourseAdmin(MyBase):
     form_args = dict(
