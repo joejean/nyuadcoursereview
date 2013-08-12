@@ -48,7 +48,7 @@
 						<label class="control-label" for="coursequality">Course Quality <span class="label label-important">*</span></label>
 						<div class="controls">
 							{{form.rating.process_data(rating)|replace("None"," ")}}
-							{{form.rating(class="span1")}}<small><span class="label label-important"><i class="icon-star"> </i></span></small>
+							{{form.rating(class="span1")}}
 							
 						</div>
 				  </div>
@@ -57,7 +57,7 @@
 			
 					<div class="controls">
 						{{form.comment.process_data(comment)|replace("None"," ")}}
-						{{form.comment(rows=13, class="input-block-level")}}<small><span class="label label-important"><i class="icon-star"> </i></span></small>
+						{{form.comment(rows=13, class="input-block-level")}}
 					</div>
 					
 				  </div>
