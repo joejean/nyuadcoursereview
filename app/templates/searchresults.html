@@ -23,14 +23,25 @@
 				<thead>
 					<tr>
 					  <th>Course Name</th>
-					  <th>Total Reviews </th>
+					  <th class="span2">Total Reviews </th>
 					</tr>
 				</thead>
 				  <tbody>
 				  
 						{% for c in results %}
 							<tr>
-							  <td><a href="{{url_for('reviews',courseid=c.id)}}"><strong>{{ c.course_name}}</strong></a> with <small> Prof {{c.professor[0].professor_name}}</small></td>
+							  <td><a href="{{url_for('reviews',courseid=c.id)}}"><strong>{{ c.course_name}}</strong></a>
+								{% if (c.professor|length)==0 %}
+									</td>
+								{% elif (c.professor|length)==1 %}
+								<small>with {{c.professor[0].professor_name}}</small></td>
+								{% else %}
+									<small>with 
+									{% for p in c.professor %}
+									{{p.professor_name}},
+									{% endfor %}
+									</small></td>
+								{% endif %}
 							  <td><a href="{{url_for('reviews',courseid=c.id)}}">{{c.totalreviews()}} Reviews</a></td>
 							</tr>
 						{% endfor %}

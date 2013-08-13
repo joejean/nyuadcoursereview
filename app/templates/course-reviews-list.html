@@ -8,14 +8,12 @@
 			<h2>{{course.course_name}} 
 			{% if (course.professor|length)==0 %}
 			</h2>
-			{% endif %}
-			
-			{% if (course.professor|length)==1 %}
+			{% elif (course.professor|length)==1 %}
 			<small>with {{course.professor[0].professor_name}}</small></h2>
 			{% else %}
 				<small>with 
-				{% for c in course.professor %}
-				{{c.professor_name}},
+				{% for p in course.professor %}
+				{{p.professor_name}},
 				{% endfor %}
 				</small></h2>
 			{% endif %}

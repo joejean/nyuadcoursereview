@@ -31,13 +31,26 @@
 				<thead>
 					<tr>
 					  <th>Course Name</th>
-					  <th>Total Reviews </th>
+					  <th class="span2">Total Reviews </th>
 					</tr>
 				</thead>
 				  <tbody>
 					{% for course, totalcomments in courses %}
 						<tr>
-						  <td><a href="{{url_for('reviews',courseid=course.id)}}"><strong>{{ course.course_name}}</strong></a> with <small> Prof {{course.professor[0].professor_name}}</small></td>
+						  <td><a href="{{url_for('reviews',courseid=course.id)}}"><strong>{{ course.course_name}}</strong></a>
+						    {% if (course.professor|length)==0 %}
+								</td>
+								
+							{% elif (course.professor|length)==1 %}
+							<small>with {{course.professor[0].professor_name}}</small></td>
+							{% else %}
+								<small>with 
+								{% for p in course.professor %}
+								{{p.professor_name}},
+								{% endfor %}
+								</small></td>
+							{% endif %}
+						  
 						  <td><a href="{{url_for('reviews',courseid=course.id)}}"><strong>{{totalcomments}} Reviews </strong></a></td>
 						</tr>
 					{% endfor %}
