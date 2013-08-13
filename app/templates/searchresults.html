@@ -42,7 +42,12 @@
 									{% endfor %}
 									</small></td>
 								{% endif %}
-							  <td><a href="{{url_for('reviews',courseid=c.id)}}">{{c.totalreviews()}} Reviews</a></td>
+								{% if c.totalreviews() > 1 %}
+									<td><a href="{{url_for('reviews',courseid=c.id)}}"><strong>{{c.totalreviews()}} Reviews</strong></a></td>
+								{% else %}
+									<td><a href="{{url_for('reviews',courseid=c.id)}}"><strong>{{c.totalreviews()}} Review</strong></a></td>
+								{% endif %}
+								
 							</tr>
 						{% endfor %}
 		{% endif %}
