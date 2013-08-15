@@ -4,12 +4,39 @@
 		<br>
 		{% if edit %}
 		<div class="page-header">
-			<h2> Edit Review for : {{course.course_name}} <small>with {{professor.professor_name}}</small><h2>
+			<h2> Edit Review for : {{course.course_name}} 
+			{% if (course.professor|length)==0 %}
+				</h2>
+								
+			{% elif (course.professor|length)==1 %}
+			<small>with {{course.professor[0].professor_name}}</small></h2>
+			{% else %}
+				<small>with 
+				{% for p in course.professor %}
+				{{p.professor_name}},
+				{% endfor %}
+				</small></h2>
+			{% endif %}
+			
+			
 			
 		</div>
 		{% else %}
 		<div class="page-header">
-			<h2> New Review for : {{course.course_name}} <small>with {{professor.professor_name}}</small><h2>
+			<h2> New Review for : {{course.course_name}}
+			{% if (course.professor|length)==0 %}
+				</h2>
+								
+			{% elif (course.professor|length)==1 %}
+				<small>with {{course.professor[0].professor_name}}</small></h2>
+			{% else %}
+				<small>with 
+				{% for p in course.professor %}
+				{{p.professor_name}},
+				{% endfor %}
+				</small></h2>
+			{% endif %}
+			
 			
 		</div>
 		{% endif %}

@@ -128,7 +128,6 @@ def write(courseid):
     if courseid < 0:
         abort(404)
     course = Course.query.get_or_404(courseid)
-    professor = Professor.query.get_or_404(course.professor[0].id)
     
     from datetime import datetime
     
@@ -146,7 +145,7 @@ def write(courseid):
             db.session.rollback()
             flash("Sorry you can't post more than one review for a single course. Please edit the former one below.", "error")
             return redirect(url_for('editreview',courseid = course.id, userid = g.user.id))
-    return render_template('write.html',form = form, professor = professor, course=course, edit = False, title = "Write Review")
+    return render_template('write.html',form = form, course=course, edit = False, title = "Write Review")
 
 
 @app.route('/editreview/<int:courseid>/<int:userid>', methods=['GET', 'POST'])
@@ -156,7 +155,7 @@ def editreview(courseid, userid):
         abort(404)
     user = User.query.get_or_404(userid)
     course = Course.query.get_or_404(courseid)
-    professor = Professor.query.get_or_404(course.professor[0].id)
+    
     from datetime import datetime
     review = Review.query.filter_by(course_id=courseid, user_id=userid).first()
     if review.user_id != g.user.id and g.user.net_id not in SUPERUSERS:
@@ -171,7 +170,7 @@ def editreview(courseid, userid):
         flash("Review edited successfully","success")
         return redirect('home')
     
-    return render_template('write.html',form = form, professor = professor, course=course, rating=review.rating, \
+    return render_template('write.html',form = form, course=course, rating=review.rating, \
                            comment=review.review_comment, edit =True, title = "Edit Review")
 
 @app.route('/reviews/<int:courseid>')
