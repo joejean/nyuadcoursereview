@@ -261,6 +261,10 @@ def login(provider_name='nyuad'):
         if result.user:
             # We need to update the user to get more info.
             result.user.update()
+            #Check if passport returns an error, if so, that means the user is not a student, therefore we redirect the user to landing
+            if hasattr(result.user, "error"):
+                flash("Sorry, it seems that you are not a student, so you can't use NYUAD Coursereview.", "error")
+                return redirect(url_for('landing'))
             #Check the user group, if belongs to any restricted group redirect login
             for gr in result.user.groups:
                 if gr in AUTHORIZED_GROUPS:
