@@ -8,7 +8,7 @@
     
       <div class="row">
         <div class="span3">
-          <h3>Courses by Major</h3>
+          <h4>Courses by Major</h4>
 			  <ul class="unstyled">
 				{% for category in categories %}
 				<li><a href="{{url_for('coursesbymajor',catid=category.id)}}">{{category.category_name}} </a>({{category.courses_count()}})</li>
@@ -16,7 +16,7 @@
 			  </ul>
 			
 			<hr>                                          
-			<h3>Latest Reviews</h3>
+			<h4>Latest Reviews</h4>
 			{% for review in reviews %}
 			<p> By <strong>Anonymous</strong> on <a href="{{url_for('reviews',courseid=review.course.id)}}">{{review.course.course_name}}</a> <span class="badge badge-inverse"><small>{{"{0:0.2f}".format(review.rating)}} / 5</small></span>
 			"{{review.review_comment}} "</p>
@@ -25,42 +25,86 @@
 		
 	
         <div class="span9">
-          <h3> Most Rated Courses</h3>
-
-			<table class="table table-striped  table-bordered">
-				<thead>
-					<tr class="hero-background">
-					  <th >Course Name</th>
-					  <th class="span2">Total Reviews </th>
-					</tr>
-				</thead>
-				  <tbody>
-					{% for course, totalcomments in courses %}
-						<tr>
-						  <td><a href="{{url_for('reviews',courseid=course.id)}}"><strong>{{ course.course_name}}</strong></a>
-						    {% if (course.professor|length)==0 %}
-								</td>
-								
-							{% elif (course.professor|length)==1 %}
-							<small>with {{course.professor[0].professor_name}}</small></td>
-							{% else %}
-								<small>with 
-								{% for p in course.professor %}
-								{{p.professor_name}},
-								{% endfor %}
-								</small></td>
-							{% endif %}
-						  
-						  <td><a href="{{url_for('reviews',courseid=course.id)}}"><strong>{{totalcomments}} Reviews </strong></a></td>
-						</tr>
-					{% endfor %}
+			<ul class="nav nav-tabs">
+			  <li><a href="#mosreviewed" data-toggle="tab"><strong>Most Reviewed Courses</strong> </a></li>
+			  <li><a href="#toprated" data-toggle="tab"><strong>Top Rated Courses</strong> </a></li>
+			</ul>
+			
+			<div class="tab-content">
+				<div class="tab-pane active" id="mosreviewed">
 					
-					
-					
-				  </tbody>		
-			</table>
-          
-       </div>
+					<table class="table table-striped  table-bordered">
+						<thead>
+							<tr class="hero-background">
+							  <th >Course Name</th>
+							  <th class="span2">Total Reviews </th>
+							</tr>
+						</thead>
+						  <tbody>
+							{% for course, totalreviews in courses %}
+								<tr>
+								  <td><a href="{{url_for('reviews',courseid=course.id)}}"><strong>{{ course.course_name}}</strong></a>
+									{% if (course.professor|length)==0 %}
+										</td>
+										
+									{% elif (course.professor|length)==1 %}
+									<small>with {{course.professor[0].professor_name}}</small></td>
+									{% else %}
+										<small>with 
+										{% for p in course.professor %}
+										{{p.professor_name}},
+										{% endfor %}
+										</small></td>
+									{% endif %}
+								  
+								  <td><a href="{{url_for('reviews',courseid=course.id)}}"><strong>{{totalreviews}} Reviews </strong></a></td>
+								</tr>
+							{% endfor %}
+							
+							
+							
+						  </tbody>		
+					</table>
+				</div>
+				
+				<div class="tab-pane" id="toprated">
+					<table class="table table-striped  table-bordered">
+						<thead>
+							<tr class="hero-background">
+							  <th >Course Name</th>
+							  <th class="span2">Average Rating</th>
+							</tr>
+						</thead>
+						  <tbody>
+							{% for course, avgrating, totalReviews in trcourses %}
+								<tr>
+								  <td><a href="{{url_for('reviews',courseid=course.id)}}"><strong>{{ course.course_name}}</strong></a>
+									{% if (course.professor|length)==0 %}
+										</td>
+										
+									{% elif (course.professor|length)==1 %}
+									<small>with {{course.professor[0].professor_name}}</small></td>
+									{% else %}
+										<small>with 
+										{% for p in course.professor %}
+										{{p.professor_name}},
+										{% endfor %}
+										</small></td>
+									{% endif %}
+								  
+								  <td><span class="badge badge-inverse">{{"{0:0.2f}".format(avgrating)}}</span> <br /> <a href="{{url_for('reviews',courseid=course.id)}}"> 
+								  <strong><small>{{totalReviews}} Reviews</small></strong></a></td>
+								</tr>
+							{% endfor %}
+							
+							
+							
+						  </tbody>		
+					</table>
+				
+				</div>
+			</div>
+		</div>
         
       </div>
 

@@ -5,7 +5,9 @@ from flask_mail import Mail
 from config import basedir, ADMINS, MAIL_SERVER, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD
 from momentjs import momentjs
 from flask.ext.admin import Admin
+from flask.ext.cacheify import init_cacheify
 import os
+
 
 
 app = Flask(__name__)
@@ -15,6 +17,7 @@ db = SQLAlchemy(app)
 lm = LoginManager()
 lm.init_app(app)
 mail = Mail(app)
+cache = init_cacheify(app)
 app.jinja_env.globals['momentjs'] = momentjs
 
 #send an email when there is an 500 error

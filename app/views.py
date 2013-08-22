@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, make_response, redirect, url_
 from authomatic.adapters import WerkzeugAdapter
 from authomatic import Authomatic
 from flask.ext.login import login_user, logout_user, login_required, current_user
-from app import app, lm, db, models, mail
+from app import app, lm, db, models, mail, cache
 from flask_mail import Message
 from forms import reviewSubmissionForm, searchForm, courseSubmissionForm
 from app import oauthLogin
@@ -10,6 +10,7 @@ from models import User, Review, Category, Course, Like, Professor
 from config import POST_PER_PAGE_SHORT, POST_PER_PAGE_LONG , SUPERUSERS, MAIL_DEFAULT_SENDER, MAX_SEARCH_RESULTS, AUTHORIZED_GROUPS, ADMINS
 from sqlalchemy.sql import func
 from sqlalchemy_searchable import search
+import json
 
 
 # Instantiate Authomatic.
@@ -27,6 +28,11 @@ def load_user(id):
 def before_request():
     g.user = current_user
     g.search_form = searchForm()
+    g.courses=[]
+    courses = Course.query.all()
+    for c in courses:
+        g.courses.append(c.course_name)
+    
     
 
 
@@ -37,6 +43,8 @@ def before_request():
 def landing():
     if g.user.is_authenticated():
         return redirect(url_for('home'))
+    next_url = request.args.get('next')
+    cache.set('next_url', next_url, 60)
     return render_template('landing.html', title ="Welcome")
 
 
@@ -54,16 +62,26 @@ def termsofuse():
 @login_required
 def home():
     categories = Category.query.order_by(Category.category_name)
+    latest_reviews = Review.query.order_by(Review.review_date.desc()).all()[0:2]
+    
     #Most reviewwed courses , starting with those that have at least 2 reviews.
-    most_rated_course_id_subquery = db.session.query(Review.course_id, func.count(Review.course_id).label("count")).\
+    most_reviewed_course_id_subquery = db.session.query(Review.course_id, func.count(Review.course_id).label("count")).\
                                     group_by(Review.course_id).having(func.count(Review.course_id) > 1).subquery()
 
-    courses = db.session.query( Course, most_rated_course_id_subquery.c.count).join(most_rated_course_id_subquery).\
-              order_by(most_rated_course_id_subquery.c.count.desc()).all()[0:30]
-    
-    latest_reviews = Review.query.order_by(Review.review_date.desc()).all()[0:2]
+    most_reviewed_courses = db.session.query( Course, most_reviewed_course_id_subquery.c.count).join(most_reviewed_course_id_subquery).\
+              order_by(most_reviewed_course_id_subquery.c.count.desc()).all()[0:30]
 
-    return render_template('home.html', categories = categories, courses=courses, reviews= latest_reviews, title="Home" )
+    #Top rated courses
+    #func.avg(Review.rating) >= 3
+    top_rated_course_id_subquery = db.session.query(Review.course_id, func.avg(Review.rating).label("rating"), func.count(Review.course_id).label("count")).\
+                                    group_by(Review.course_id).having(func.count(Review.course_id) > 2).subquery()
+
+    top_rated_courses = db.session.query( Course, top_rated_course_id_subquery.c.rating, top_rated_course_id_subquery.c.count).join(top_rated_course_id_subquery).\
+              order_by(top_rated_course_id_subquery.c.rating.desc()).all()
+    
+    
+
+    return render_template('home.html', categories = categories, courses=most_reviewed_courses, trcourses= top_rated_courses, reviews= latest_reviews, title="Home" )
 
 
 #SEARCH VIEWS
@@ -287,7 +305,7 @@ def login(provider_name='nyuad'):
             login_user(user)
             flash("You were logged in successfully.", "success")
         # The rest happens inside the template.
-        return redirect(request.args.get('next') or url_for('home'))
+        return redirect(cache.get('next_url') or url_for('home'))
     
     # Don't forget to return the response.
     return response
