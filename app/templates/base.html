@@ -17,7 +17,7 @@
 		
 		
 		<link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
-		<link href="{{ url_for('static', filename='bootstrap.css') }}" rel="stylesheet">
+		
 		
 		<style type="text/css">
 		  body {
@@ -68,7 +68,7 @@
 				<div class="input-append">
 					{{g.search_form.hidden_tag()}}
 					{{g.search_form.search(class="span4 search-query",id="searchb",placeholder="Search Course name or Course name keywords here", autocomplete="off", 
-					**{'data-provide':'typeahead','data-items':'7'})}}
+					**{'data-provide':'typeahea'})}}
 					<button type="submit" class="btn">Go!</button>
 				</div>
             </form>
@@ -154,11 +154,13 @@
 		<!-- Placed at the end of the document so the pages load faster -->
 		
 		<script src="{{ url_for('static', filename = 'jquery.js') }}"></script>
-		<script src= "{{ url_for('static', filename = 'bootstrap.js') }}"></script>
 		<script src="{{ url_for('static', filename = 'bootstrap.min.js') }}"></script>
 		<script type=text/javascript>
 			var courses= {{g.courses|tojson|safe}};
-			$('#searchb').typeahead({source: courses});
+			$('#searchb').typeahead({
+			source: courses,
+			items: 4,
+			});
 		</script>
 		
 		
