@@ -160,6 +160,11 @@
 			$('#searchb').typeahead({
 			source: courses,
 			items: 4,
+			updater: function(item){
+			window.location.href = {{url_for('search_results',query=item)}}+item;
+			return item;
+			},
+			
 			});
 		</script>
 		
