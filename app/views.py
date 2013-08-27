@@ -284,16 +284,16 @@ def login(provider_name='nyuad'):
                 flash("Sorry, it seems that you are not a student, so you can't use NYUAD Coursereview.", "error")
                 return redirect(url_for('landing'))
             #Check the user group, if belongs to any restricted group redirect login
-            for gr in result.user.groups:
-                if gr in AUTHORIZED_GROUPS:
-                    authorized = True
-                    break
-                else:
-                    authorized = False
-                    
-            if not authorized:
-                flash("Sorry, it seems that you are not a student, so you can't use NYUAD Coursereview.", "error")
-                return redirect(url_for('landing'))
+##            for gr in result.user.groups:
+##                if gr in AUTHORIZED_GROUPS:
+##                    authorized = True
+##                    break
+##                else:
+##                    authorized = False
+##                    
+##            if not authorized:
+##                flash("Sorry, it seems that you are not a student, so you can't use NYUAD Coursereview.", "error")
+##                return redirect(url_for('landing'))
             
             #check if the user is in the database already
             user = User.query.filter_by(net_id = result.user.NetID).first()
