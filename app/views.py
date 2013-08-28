@@ -302,7 +302,7 @@ def login(provider_name='nyuad'):
                 db.session.add(user)
                 db.session.commit()
             
-            login_user(user, remember=True)
+            login_user(user)
             flash("You were logged in successfully.", "success")
         # The rest happens inside the template.
         return redirect(cache.get('next_url') or url_for('home'))
