@@ -38,7 +38,7 @@ def before_request():
 
 #LANDING and  HOMEPAGE , ABOUT and TERMS of USE VIEWS
 
-@app.route('/')
+
 @app.route('/landing')
 def landing():
     if g.user.is_authenticated():
@@ -57,7 +57,7 @@ def about():
 def termsofuse():
     return render_template('termsofuse.html', title ="Terms of Use")
 
-
+@app.route('/')
 @app.route('/home')
 @login_required
 def home():
@@ -302,7 +302,7 @@ def login(provider_name='nyuad'):
                 db.session.add(user)
                 db.session.commit()
             
-            login_user(user)
+            login_user(user, remember=True)
             flash("You were logged in successfully.", "success")
         # The rest happens inside the template.
         return redirect(cache.get('next_url') or url_for('home'))

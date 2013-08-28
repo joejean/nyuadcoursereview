@@ -50,7 +50,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-		  <a class="brand" href="{{url_for('home')}}"><img src="{{ url_for('static', filename='logo2.png') }}" /></a>
+		 <a href="http://cr.sg.nyuad.org/home" class="brand" > <img src="{{ url_for('static', filename='logo2.png') }}" /> </a>
           <div class="nav-collapse collapse">
             <ul class="nav pull-right">
 				{% if g.user.is_authenticated() %}
@@ -166,6 +166,12 @@
 			},
 			
 			});
+		</script>
+		<script type=text/javascript>
+		function redirectHome(){
+		window.location.href = {{url_for('home')}};
+		
+		}
 		</script>
 		
 		
