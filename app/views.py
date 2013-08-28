@@ -38,7 +38,7 @@ def before_request():
 
 #LANDING and  HOMEPAGE , ABOUT and TERMS of USE VIEWS
 
-
+@app.route('/')
 @app.route('/landing')
 def landing():
     if g.user.is_authenticated():
@@ -57,7 +57,7 @@ def about():
 def termsofuse():
     return render_template('termsofuse.html', title ="Terms of Use")
 
-@app.route('/')
+
 @app.route('/home')
 @login_required
 def home():
