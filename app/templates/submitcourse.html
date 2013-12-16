@@ -21,10 +21,24 @@
 				</div>
 				{% endfor %}
 						
-				
-				
 						
 				{% for error in form.errors.professor %}
+				<div class="alert alert-error">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<strong>Oops!</strong> {{error}}
+				</div>
+				{% endfor %}
+
+
+				{% for error in form.errors.rating %}
+				<div class="alert alert-error">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<strong>Oops!</strong> {{error}}
+				</div>
+				{% endfor %}
+						
+				
+				{% for error in form.errors.comment %}
 				<div class="alert alert-error">
 				<button type="button" class="close" data-dismiss="alert">&times;</button>
 				<strong>Oops!</strong> {{error}}
