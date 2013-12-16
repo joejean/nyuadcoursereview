@@ -126,11 +126,13 @@ def submitcourse():
     if form.validate_on_submit():
         
         msg = Message("Course Submission", sender = MAIL_DEFAULT_SENDER, recipients = ADMINS)
-        msg.body = """
-        From: <%s>
-        Course: %s
-        Professor: %s
-        """ % (g.user.net_id, form.course.data, form.professor.data)
+        msg.html = """
+        <b>From</b>: %s <br \>
+        <b>Course</b>: %s <br \>
+        <b>Professor</b>: %s <br \>
+        <b>Course Quality</b>: %s <br \>
+        <b>Review</b>: %s
+        """ % (g.user.net_id, form.course.data, form.professor.data, form.rating.data, form.comment.data)
         mail.send(msg)
         flash("Course submitted. Admins will add it as soon as possible.","success")
         return redirect('home')
