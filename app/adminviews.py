@@ -29,6 +29,13 @@ class ProfessorAdmin(MyBase):
         'courses': QuerySelectMultipleFieldSet
     }
 
+    form_args = {
+      'courses': {
+          'query_factory': lambda: db.session.query(models.Course)
+      }
+    }
+
+
    
 
 
